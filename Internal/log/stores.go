@@ -40,6 +40,7 @@ func (s *store) Append(p []byte) (n uint64, pos uint64, err error) {
 	s.size += uint64(writtenBytes)
 
 	return uint64(writtenBytes), pos, nil
+
 }
 
 func (s *store) Read(pos uint64) ([]byte, error) {
@@ -83,9 +84,8 @@ func (s *store) ReadAt(p []byte, off int64) (int, error) {
 	return s.File.ReadAt(p, off)
 }
 
-
-return &store {
+/*return &store{
 	File: f,
 	size: size,
-	buf: bufio.NewWriter(f)
-}
+	buf:  bufio.NewWriter(f),
+}*/

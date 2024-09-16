@@ -1,4 +1,4 @@
-package server_api
+package server
 
 import (
 	"encoding/json"
