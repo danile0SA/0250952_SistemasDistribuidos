@@ -13,7 +13,7 @@ var (
 )
 
 func TestStoreAppendRead(t *testing.T) {
-	f, err := os.CreateTemp("", "store_append_read_tes")
+	f, err := os.CreateTemp("", "store_append_read_test")
 	require.NoError(t, err)
 	defer os.Remove(f.Name())
 

@@ -1,9 +1,9 @@
-package main
+package main_http
 
 import (
 	"log"
 
-	server "github.com/danile0_SA/0250952_SistemasDistribuidos/internal/server"
+	server "github.com/danile0SA/0250952_SistemasDistribuidos/Internal/Server"
 )
 
 func main() {
