@@ -29,7 +29,8 @@ func TestIndex(t *testing.T) {
 		{Off: 1, Pos: 10},
 	}
 	for _, want := range entries {
-		err = idx.Write(want.Off, want.Pos)
+		// Convertir want.Off de uint32 a uint64 al llamar a Write
+		err = idx.Write(uint64(want.Off), want.Pos)
 		require.NoError(t, err)
 		_, pos, err := idx.Read(int64(want.Off))
 		require.NoError(t, err)
