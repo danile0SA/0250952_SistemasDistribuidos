@@ -16,12 +16,6 @@ var (
 	entWidth        = offWidth + posWidth // Tamaño total de la entrada (offset + posición)
 )
 
-type Config struct {
-	Segment struct {
-		MaxIndexBytes uint64 // Tamaño máximo del índice en bytes
-	}
-}
-
 type index struct {
 	file *os.File    // Archivo donde se guarda el índice
 	mmap gommap.MMap // Mapeo directo entre memoria y archivo
