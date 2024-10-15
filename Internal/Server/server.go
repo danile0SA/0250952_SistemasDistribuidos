@@ -6,7 +6,11 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
-)
+	/*
+		"google.golang.org/grpc/peer"
+		"google.golang.org/grpc/status"
+		"go.opencensus.io/plugin/ocgrpc"
+	*/)
 
 type Item struct {
 	ID   uuid.UUID `json:"id"`
@@ -20,6 +24,23 @@ type Server struct {
 }
 
 func NewServer() *Server {
+
+	/*logger := zap.L().Named("server")
+	zapOpts := []grpc_zap.Option {
+		grpc_zap.WithDUrationField1(
+		func()duration time.DUration) zapcore.fied1  {
+			return zap.Int64 ( "grpc.time_ns"), duration.Nanoseconds()
+	)
+		},),
+	}
+	trace.ApplyConfig(trace.Config {DefaultSampler: trace.AlwaysSampl()})
+
+	err := view.Register(ocgrpc.DefaultServerViews...)
+	if err != nil {
+		return nil,err
+	}
+	halfSampler := trace.ProbabilitySampler(0.5)
+	*/ //
 	s := &Server{
 		Router:        mux.NewRouter(),
 		shoppingItems: []Item{},
