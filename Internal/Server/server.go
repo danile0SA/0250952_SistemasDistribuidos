@@ -1,103 +1,99 @@
+// START: types
 package server
 
 import (
-	"encoding/json"
-	"net/http"
+	"context"
 
-	"github.com/google/uuid"
-	"github.com/gorilla/mux"
-	/*
-		"google.golang.org/grpc/peer"
-		"google.golang.org/grpc/status"
-		"go.opencensus.io/plugin/ocgrpc"
-	*/)
+	api "github.com/danile0SA/0250952_SistemasDistribuidos/api/v1" // Importa el código generado
 
-type Item struct {
-	ID   uuid.UUID `json:"id"`
-	Name string    `json:"name`
+	"google.golang.org/grpc"
+)
+
+type Config struct {
+	CommitLog CommitLog
 }
 
-type Server struct {
-	*mux.Router
+var _ api.LogServer = (*grpcServer)(nil)
 
-	shoppingItems []Item
-}
-
-func NewServer() *Server {
-
-	/*logger := zap.L().Named("server")
-	zapOpts := []grpc_zap.Option {
-		grpc_zap.WithDUrationField1(
-		func()duration time.DUration) zapcore.fied1  {
-			return zap.Int64 ( "grpc.time_ns"), duration.Nanoseconds()
-	)
-		},),
-	}
-	trace.ApplyConfig(trace.Config {DefaultSampler: trace.AlwaysSampl()})
-
-	err := view.Register(ocgrpc.DefaultServerViews...)
+func NewGRPCServer(config *Config) (*grpc.Server, error) {
+	gsrv := grpc.NewServer()
+	srv, err := newgrpcServer(config)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
-	halfSampler := trace.ProbabilitySampler(0.5)
-	*/ //
-	s := &Server{
-		Router:        mux.NewRouter(),
-		shoppingItems: []Item{},
-	}
-	s.routes()
-	return s
+	api.RegisterLogServer(gsrv, srv)
+	return gsrv, nil
 }
 
-func (s *Server) createShoppingItem() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		var i Item
-		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-		i.ID = uuid.New()
-		s.shoppingItems = append(s.shoppingItems, i)
+type grpcServer struct {
+	api.UnimplementedLogServer
+	*Config
+}
 
-		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(i); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+func newgrpcServer(config *Config) (srv *grpcServer, err error) {
+	srv = &grpcServer{
+		Config: config,
 	}
-
+	return srv, nil
 }
 
-func (s *Server) routes() {
-
-	s.HandleFunc("/shopping-items", s.listShoppingItems()).Methods("GET")
-	s.HandleFunc("/shopping-items", s.createShoppingItem()).Methods("POST")
-	s.HandleFunc("/shopping-items/{id}", s.removeShoppingItem()).Methods("DELETE")
-
-}
-func (s *Server) listShoppingItems() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(s.shoppingItems); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+func (s *grpcServer) Produce(ctx context.Context, req *api.ProduceRequest) (*api.ProduceResponse, error) {
+	offset, err := s.CommitLog.Append(req.Record)
+	if err != nil {
+		return nil, err
 	}
+	return &api.ProduceResponse{Offset: offset}, nil
 }
 
-func (s *Server) removeShoppingItem() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		idStr, _ := mux.Vars(r)["id"]
-		id, err := uuid.Parse(idStr)
+func (s *grpcServer) Consume(ctx context.Context, req *api.ConsumeRequest) (*api.ConsumeResponse, error) {
+	record, err := s.CommitLog.Read(req.Offset)
+	if err != nil {
+		return nil, err
+	}
+	return &api.ConsumeResponse{Record: record}, nil
+}
+
+func (s *grpcServer) ProduceStream(stream api.Log_ProduceStreamServer) error {
+	for {
+		req, err := stream.Recv()
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
+			return err
 		}
-
-		for i, item := range s.shoppingItems {
-			if item.ID == id {
-				s.shoppingItems = append(s.shoppingItems[:i], s.shoppingItems[i+1:]...)
-				break
-			}
+		res, err := s.Produce(stream.Context(), req)
+		if err != nil {
+			return err
+		}
+		if err = stream.Send(res); err != nil {
+			return err
 		}
 	}
 }
+
+func (s *grpcServer) ConsumeStream(req *api.ConsumeRequest, stream api.Log_ConsumeStreamServer) error {
+	for {
+		select {
+		case <-stream.Context().Done():
+			return nil
+		default:
+			res, err := s.Consume(stream.Context(), req)
+			switch err.(type) {
+			case nil:
+			case api.ErrOffsetOutOfRange:
+				continue
+			default:
+				return err
+			}
+			if err = stream.Send(res); err != nil {
+				return err
+			}
+			req.Offset++
+		}
+	}
+}
+
+type CommitLog interface {
+	Append(*api.Record) (uint64, error)
+	Read(uint64) (*api.Record, error)
+}
+
+// END: commitlog
