@@ -18,7 +18,7 @@ import (
 	"log"
 	"net"
 
-	pb "github.com/danile0SA/0250952_SistemasDistribuidos/api/v1" // Importa el código generado
+	pb "github.com/danile0SA/0250952_SistemasDistribuidos/api/v1/" // Importa el código generado
 	"google.golang.org/grpc"
 )
 
