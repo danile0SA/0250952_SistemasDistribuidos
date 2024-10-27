@@ -1,6 +1,9 @@
 syntax = "proto3";
 
-package log.v1;
+package log;
+
+option go_package = "github.com/danile0SA/0250952_SistemasDistribuidos/api/v1";
+;
 
 service Log {
     rpc Produce(ProduceRequest) returns (ProduceResponse) {}
