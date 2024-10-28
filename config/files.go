@@ -21,11 +21,7 @@ func configFile(filename string) string {
 	if dir := os.Getenv("CONFIG_DIR"); dir != "" {
 		return filepath.Join(dir, filename)
 	}
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
 
-	// modify this
-	return filepath.Join(homeDir, "/Documents/UP Daniel/Computo Distribuido/Go_Server/GO_Module/0250952_SistemasDistribuidos/test", filename)
+	// Modificar esta línea para usar la ruta en Windows
+	return filepath.Join("C:\\Users\\danie\\Documents\\UP Daniel\\Computo Distribuido\\Go_Server\\GO_Module\\0250952_SistemasDistribuidos\\test", filename)
 }

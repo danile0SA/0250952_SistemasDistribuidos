@@ -6,8 +6,8 @@ import (
 	"os"
 	"testing"
 
-	log "github.com/danile0SA/0250952_SistemasDistribuidos/Internal" // Cambien esto por la ruta en su máquina
-	api "github.com/danile0SA/0250952_SistemasDistribuidos/api/v1"   // Importa el código generado // Cambien esto por la ruta en su máquina
+	log "github.com/danile0SA/0250952_SistemasDistribuidos/Internal"
+	api "github.com/danile0SA/0250952_SistemasDistribuidos/api/v1"
 	auth "github.com/danile0SA/0250952_SistemasDistribuidos/auth"
 	tlsconfig "github.com/danile0SA/0250952_SistemasDistribuidos/config"
 	"github.com/stretchr/testify/require"
