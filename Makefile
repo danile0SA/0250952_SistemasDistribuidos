@@ -3,7 +3,7 @@
 
 CONFIG_PATH="C:/Users/danie/Documents/UP Daniel/Computo Distribuido/Go_Server/GO_Module/0250952_SistemasDistribuidos/config"
 
-.PHONY: init
+.PHONY: init	
 
 init:
 	mkdir -p ${CONFIG_PATH}

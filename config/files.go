@@ -18,14 +18,11 @@ var (
 )
 
 func configFile(filename string) string {
+	// Verificar si la variable de entorno CONFIG_DIR está establecida
 	if dir := os.Getenv("CONFIG_DIR"); dir != "" {
 		return filepath.Join(dir, filename)
 	}
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		panic(err)
-	}
 
-	// modify this
-	return filepath.Join(homeDir, "/Projects/SistemasDistribuidos/SistemasDistribuidos-Proyecto/.SistemasDistribuidos-Proyecto/", filename)
+	// Usar la ruta deseada directamente
+	return filepath.Join("C:/Users/danie/Documents/UP Daniel/Computo Distribuido/Go_Server/GO_Module/0250952_SistemasDistribuidos/config", filename)
 }
