@@ -1,6 +1,6 @@
 # Esto nos ayuda a posicionar nuestros config files en una carpeta dentro de nuestro proyecto
 
-CONFIG_PATH=C:\Users\danie\Documents\UP Daniel\Computo Distribuido\Go_Server\GO_Module\0250952_SistemasDistribuidos\test
+CONFIG_PATH= "C:\Users\danie\Documents\UP Daniel\Computo Distribuido\Go_Server\GO_Module\0250952_SistemasDistribuidos\test"
 
 .PHONY: init
 
@@ -9,42 +9,40 @@ init:
 	if not exist "$(CONFIG_PATH)" mkdir "$(CONFIG_PATH)"
 
 .PHONY: gencert
-# gencert - Genera certificados
+# gencert - Genera certificados de CA, servidor, cliente, y clientes específicos
 gencert: init
 	cfssl gencert ^
-		-initca test\ca-csr.json | cfssljson -bare ca
+		-initca test\ca-csr.json | cfssljson -bare "$(CONFIG_PATH)\ca"
 
 	cfssl gencert ^
-		-ca=ca.pem ^
-		-ca-key=ca-key.pem ^
+		-ca="$(CONFIG_PATH)\ca.pem" ^
+		-ca-key="$(CONFIG_PATH)\ca-key.pem" ^
 		-config=test\ca-config.json ^
 		-profile=server ^
-		test\server-csr.json | cfssljson -bare server
+		test\server-csr.json | cfssljson -bare "$(CONFIG_PATH)\server"
 
 	cfssl gencert ^
-		-ca=ca.pem ^
-		-ca-key=ca-key.pem ^
+		-ca="$(CONFIG_PATH)\ca.pem" ^
+		-ca-key="$(CONFIG_PATH)\ca-key.pem" ^
 		-config=test\ca-config.json ^
 		-profile=client ^
-		test\client-csr.json | cfssljson -bare client
+		test\client-csr.json | cfssljson -bare "$(CONFIG_PATH)\client"
 
 	cfssl gencert ^
-		-ca=ca.pem ^
-		-ca-key=ca-key.pem ^
+		-ca="$(CONFIG_PATH)\ca.pem" ^
+		-ca-key="$(CONFIG_PATH)\ca-key.pem" ^
 		-config=test\ca-config.json ^
 		-profile=client ^
 		-cn="root" ^
-		test\client-csr.json | cfssljson -bare root-client
+		test\client-csr.json | cfssljson -bare "$(CONFIG_PATH)\root-client"
 
 	cfssl gencert ^
-		-ca=ca.pem ^
-		-ca-key=ca-key.pem ^
+		-ca="$(CONFIG_PATH)\ca.pem" ^
+		-ca-key="$(CONFIG_PATH)\ca-key.pem" ^
 		-config=test\ca-config.json ^
 		-profile=client ^
 		-cn="nobody" ^
-		test\client-csr.json | cfssljson -bare nobody-client
-
-	move *.pem *.csr "$(CONFIG_PATH)"
+		test\client-csr.json | cfssljson -bare "$(CONFIG_PATH)\nobody-client"
 
 compile:
 	protoc api/v1/*.proto ^

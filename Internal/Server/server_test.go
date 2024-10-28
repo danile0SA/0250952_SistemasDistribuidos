@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"net"
 	"os"
 	"testing"
@@ -18,6 +19,7 @@ import (
 )
 
 func TestServer(t *testing.T) {
+	fmt.Println(tlsconfig.RootClientCertFile)
 	for scenario, fn := range map[string]func(
 		t *testing.T,
 		rootClient api.LogClient,
