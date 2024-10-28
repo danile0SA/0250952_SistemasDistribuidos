@@ -159,5 +159,3 @@ func subject(ctx context.Context) string {
 }
 
 type subjectContextKey struct{}
-
-// END: commitlog
