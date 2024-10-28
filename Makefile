@@ -1,7 +1,7 @@
 
 # Esto nos ayuda a posicionar nuestros config files en una carpeta dentro de nuestro proyecto
 
-CONFIG_PATH=${HOME}/Projects/GoGoGo/SistemasDistribuidos-Proyecto/.SistemasDistribuidos-Proyecto/
+CONFIG_PATH="C:/Users/danie/Documents/UP Daniel/Computo Distribuido/Go_Server/GO_Module/0250952_SistemasDistribuidos/config"
 
 .PHONY: init
 
