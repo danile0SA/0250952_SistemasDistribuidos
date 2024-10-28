@@ -24,5 +24,5 @@ func configFile(filename string) string {
 	}
 
 	// Usar la ruta deseada directamente
-	return filepath.Join("C:/Users/danie/Documents/UP Daniel/Computo Distribuido/Go_Server/GO_Module/0250952_SistemasDistribuidos/config", filename)
+	return filepath.Join("C:/Users/danie/Documents/UP Daniel/Computo Distribuido/Go_Server/GO_Module/0250952_SistemasDistribuidos/test", filename)
 }
