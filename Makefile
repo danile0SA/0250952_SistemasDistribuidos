@@ -1,7 +1,7 @@
 
 # Esto nos ayuda a posicionar nuestros config files en una carpeta dentro de nuestro proyecto
 
-CONFIG_PATH="C:\\Users\\danie\\Documents\\UP Daniel\\Computo Distribuido\\GO_Server\\GO_Module\\0250952_SistemasDistribuidos\\test"
+CONFIG_PATH="C:/Usuarios/danie/Documentos/UP Daniel/Computo Distribuido/Go_Server/GO_Module/0250952_SistemasDistribuidos/test"
 
 .PHONY: init
 
