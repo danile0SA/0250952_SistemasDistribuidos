@@ -5,7 +5,7 @@ import (
 )
 
 // Definimos la ruta de configuración base para Windows
-const baseConfigPath = "C:/Users/danie/Documents/UP Daniel/Computo Distribuido/GO_Server/GO_Module/0250952_SistemasDistribuidos/test"
+const baseConfigPath = "C:\\Users\\danie\\Documents\\UP Daniel\\Computo Distribuido\\GO_Server\\GO_Module\\0250952_SistemasDistribuidos\\test"
 
 var (
 	CAFile               = configFile("ca.pem")
