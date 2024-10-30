@@ -4,6 +4,9 @@ import (
 	"path/filepath"
 )
 
+// Definimos la ruta de configuración base para Windows
+const baseConfigPath = "C:/Users/danie/Documents/UP Daniel/Computo Distribuido/GO_Server/GO_Module/0250952_SistemasDistribuidos/test"
+
 var (
 	CAFile               = configFile("ca.pem")
 	ServerCertFile       = configFile("server.pem")
@@ -17,7 +20,6 @@ var (
 )
 
 func configFile(filename string) string {
-	// Ruta específica a utilizar
-	configDir := "C:\\Users\\danie\\Documents\\UP Daniel\\Computo Distribuido\\Go_Server\\GO_Module\\0250952_SistemasDistribuidos\\test"
-	return filepath.Join(configDir, filename)
+	// Devuelve la ruta del archivo en el directorio específico de Windows
+	return filepath.Join(baseConfigPath, filename)
 }
