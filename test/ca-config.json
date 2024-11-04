@@ -4,13 +4,13 @@
         "expiry": "8760h"
       },
       "profiles": {
-        "server": {
-          "expiry": "8760h",
-          "usages": ["signing", "key encipherment", "server auth"]
-        },
         "client": {
-          "expiry": "8760h",
-          "usages": ["signing", "key encipherment", "client auth"]
+          "usages": ["signing", "key encipherment", "client auth"],
+          "expiry": "8760h"
+        },
+        "server": {
+          "usages": ["signing", "key encipherment", "server auth"],
+          "expiry": "8760h"
         }
       }
     }
