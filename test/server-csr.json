@@ -1,20 +1,21 @@
 {
-    "MX": "127.0.0.1",
+    "CN": "server",
     "hosts": [
-        "localhost",
-        "127.0.0.1"
+      "127.0.0.1",
+      "localhost"
     ],
     "key": {
-        "algo": "rsa",
-        "size": 2048
+      "algo": "rsa",
+      "size": 2048
     },
     "names": [
-        {
-            "C": "MX",
-            "L": "Benito Juarez",
-            "ST": "Mexico City",
-            "O": "UP",
-            "OU": "Distributed Services"
-        }
+      {
+        "C": "MX",
+        "L": "Benito Juarez",
+        "ST": "Mexico City",
+        "O": "UP",
+        "OU": "Distributed Services"
+      }
     ]
-}
+  }
+  
